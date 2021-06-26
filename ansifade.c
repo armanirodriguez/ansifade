@@ -132,7 +132,7 @@ int main(int argc, char* argv[]){
  */
 int strtocol(char *str){
 	for (int i=0; str[i]; i++)
-    	str[i] = tolower(str[i]);
+    		str[i] = tolower(str[i]);
 	/* Check if str is in color map */
 	for(int i=0;i<NUMCOLORS;i++){
 		if(!strcmp(str,colors[i].name))
@@ -142,7 +142,7 @@ int strtocol(char *str){
 	int r, g, b = INT_MIN;
 	sscanf(str,"%d,%d,%d",&r,&g,&b);
 	if (r == INT_MIN || g == INT_MIN || b == INT_MIN ||
-		r > 255 || g > 255 || b > 255)
+	    r > 255 || g > 255 || b > 255)
 		return INT_MIN;
 	return (r << 16) | (g << 8) | b;
 }
