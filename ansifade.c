@@ -27,7 +27,7 @@ static char args_doc[]=
 
 /* Preset color RGB values in hex */
 #define COLOR_PINK 		0xff00e6
-#define COLOR_PURPLE 	0xa200ff
+#define COLOR_PURPLE 		0xa200ff
 #define COLOR_BLUE 		0x0000ff
 #define COLOR_CYAN 		0x00ffff
 #define COLOR_LIME		0x00ff00
@@ -35,14 +35,14 @@ static char args_doc[]=
 #define COLOR_WHITE		0xffffff
 #define COLOR_GREY		0xbabfbc
 #define COLOR_RED		0xff0000
-#define COLOR_YELLOW	0xffff00
+#define COLOR_YELLOW		0xffff00
 
 #define R(COLOR) ((COLOR & 0xff0000) >> 16)
 #define G(COLOR) ((COLOR & 0xff00) >> 8)
 #define B(COLOR) (COLOR & 0xff)
 
-#define SEQLEN 24   /* Length of ANSI color sequence */
-#define NUMCOLORS 9 /* Number of preset colors */
+#define SEQLEN 		24   /* Length of ANSI color sequence */
+#define NUMCOLORS 	9 /* Number of preset colors */
 
 void color_putchar(char c, int r, int g, int b, FILE* stream);
 int strtocol(char *str);
