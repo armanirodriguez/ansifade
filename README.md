@@ -1,6 +1,6 @@
 
 ![Example Image](https://i.imgur.com/dljRSkf.png)
-# ANSIFade (Python Version)
+# ANSIFade
 **Easily create fade gradiants using ASNI color codes**<br>
 Easily create
 beautiful looking commandline graphics that can be viewed on any terminal
