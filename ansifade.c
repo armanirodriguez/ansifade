@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
@@ -40,8 +41,8 @@ static char args_doc[]=
 #define G(COLOR) ((COLOR & 0xff00) >> 8)
 #define B(COLOR) (COLOR & 0xff)
 
-#define SEQLEN 		24   /* Length of ANSI color sequence */
-#define NUMCOLORS 	9 /* Number of preset colors */
+#define SEQLEN 24   /* Length of ANSI color sequence */
+#define NUMCOLORS 9 /* Number of preset colors */
 
 void color_putchar(char c, int r, int g, int b, FILE* stream);
 int strtocol(char *str);
@@ -104,26 +105,27 @@ int main(int argc, char* argv[]){
 	color1 = strtocol(args.args[0]);
 	color2 = strtocol(args.args[1]);
 	if (color1 == INT_MIN){
-		(void)fprintf(stderr, "%s: Invalid color: %s\n", argv[0], args.args[0]);
+		fprintf(stderr, "%s: Invalid color: %s\n", argv[0], args.args[0]);
 		exit(EXIT_FAILURE);
 	} else if (color2 == INT_MIN){
-		(void)fprintf(stderr, "%s: Invalid color: %s\n", argv[0], args.args[1]);
+		fprintf(stderr, "%s: Invalid color: %s\n", argv[0], args.args[1]);
 		exit(EXIT_FAILURE);
 	}
 	if (args.outfile != NULL){
 		if((of = fopen(args.outfile,"w")) == NULL){
-			(void)fprintf(stderr,"Error opening file %s: %s\n",args.outfile,strerror(errno));
+			fprintf(stderr,"Error opening file %s: %s\n",args.outfile,strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 	}
 	while((len = getline(&line,&bufsize,stdin))>0){
 		fade_line(line,len, color1, color2, of);
+		free(line);
 	}
 	if(len == -1 && !feof(stdin))
 		/* Getline failed for reason other than EOF */
-		(void)fprintf(stderr,"Error on getline: %s\n",strerror(errno));
-	if (of != NULL)
-		(void)fclose(of);
+		fprintf(stderr,"Error on getline: %s\n",strerror(errno));
+	if (of != stdout)
+		fclose(of);
 }
 /**
  * converts string to integer representation of the color
@@ -131,7 +133,7 @@ int main(int argc, char* argv[]){
  */
 int strtocol(char *str){
 	for (int i=0; str[i]; i++)
-    		str[i] = tolower(str[i]);
+    	str[i] = tolower(str[i]);
 	/* Check if str is in color map */
 	for(int i=0;i<NUMCOLORS;i++){
 		if(!strcmp(str,colors[i].name))
@@ -141,7 +143,7 @@ int strtocol(char *str){
 	int r, g, b = INT_MIN;
 	sscanf(str,"%d,%d,%d",&r,&g,&b);
 	if (r == INT_MIN || g == INT_MIN || b == INT_MIN ||
-	    r > 255 || g > 255 || b > 255)
+		r > 255 || g > 255 || b > 255)
 		return INT_MIN;
 	return (r << 16) | (g << 8) | b;
 }
@@ -156,9 +158,7 @@ int strtocol(char *str){
  * @param stream - stream to print to
  */
 void color_putc(char c, int r, int g, int b, FILE* stream){
-	char buf[SEQLEN];
-	sprintf(buf,"\x1b[38;2;%u;%u;%um%c",r,g,b,c);
-	(void)fprintf(stream,"%s",buf);
+	fprintf(stream,"\x1b[38;2;%u;%u;%um%c",r,g,b,c);
 }
 
 /**
