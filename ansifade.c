@@ -119,8 +119,8 @@ int main(int argc, char* argv[]){
 	}
 	while((len = getline(&line,&bufsize,stdin))>0){
 		fade_line(line,len, color1, color2, of);
-		free(line);
 	}
+	free(line);
 	if(len == -1 && !feof(stdin))
 		/* Getline failed for reason other than EOF */
 		fprintf(stderr,"Error on getline: %s\n",strerror(errno));
@@ -196,7 +196,7 @@ void fade_line(char *line, ssize_t len, int startcolor, int endcolor, FILE* stre
 		g += change_g;
 		b += change_b;
 	}
-	fputc('\n',stream);
+	color_putc('\n',255,255,255,stream);
 }
 
 /* Option parser */
