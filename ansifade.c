@@ -44,7 +44,7 @@ static char args_doc[]=
 #define SEQLEN 24   /* Length of ANSI color sequence */
 #define NUMCOLORS 9 /* Number of preset colors */
 
-void color_putchar(char c, int r, int g, int b, FILE* stream);
+void color_putc(char c, int r, int g, int b, FILE* stream);
 int strtocol(char *str);
 void fade_line(char *line, ssize_t len, int startcolor, int endcolor, FILE* stream);
 static error_t parse_opt (int k, char *arg, struct argp_state *state);
