@@ -44,6 +44,8 @@ static char args_doc[]=
 #define SEQLEN 24   /* Length of ANSI color sequence */
 #define NUMCOLORS 9 /* Number of preset colors */
 
+#define TERM_RESET "\x1b[0m"
+
 void color_putc(char c, int r, int g, int b, FILE* stream);
 int strtocol(char *str);
 void fade_line(char *line, ssize_t len, int startcolor, int endcolor, FILE* stream);
@@ -140,7 +142,7 @@ int strtocol(char *str){
 			return colors[i].rgb;
 	}
 	/* Otherwise parse RBG values */
-	int r, g, b = INT_MIN;
+	unsigned int r, g, b = INT_MIN;
 	sscanf(str,"%d,%d,%d",&r,&g,&b);
 	if (r == INT_MIN || g == INT_MIN || b == INT_MIN ||
 		r > 255 || g > 255 || b > 255)
@@ -191,7 +193,7 @@ void fade_line(char *line, ssize_t len, int startcolor, int endcolor, FILE* stre
 			color_putc(c,r,g,b,stream);
 		else
 			/* Print White */
-			color_putc(c,255,255,255,stream);
+			printf(TERM_RESET"%c",c);
 		r += change_r;
 		g += change_g;
 		b += change_b;
