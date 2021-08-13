@@ -6,9 +6,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+
 #include <string.h>
-#include <ctype.h>
+//#include <ctype.h>
 #include <limits.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -41,10 +41,10 @@ static char args_doc[]=
 #define G(COLOR) ((COLOR & 0xff00) >> 8)
 #define B(COLOR) (COLOR & 0xff)
 
-#define SEQLEN 24   /* Length of ANSI color sequence */
-#define NUMCOLORS 9 /* Number of preset colors */
+#define SEQLEN		24   /* Length of ANSI color sequence */
+#define NUMCOLORS 	9    /* Number of preset colors */
 
-#define TERM_RESET "\x1b[0m"
+#define TERM_RESET "\x1b[0m" /* ANSI Sequence to reset terminal */
 
 void color_putc(char c, int r, int g, int b, FILE* stream);
 int strtocol(char *str);
@@ -127,22 +127,23 @@ int main(int argc, char* argv[]){
 		/* Getline failed for reason other than EOF */
 		fprintf(stderr,"Error on getline: %s\n",strerror(errno));
 	if (of != stdout)
-		fclose(of);
+		(void)fclose(of);
 }
 /**
  * converts string to integer representation of the color
  * @return integer representation of the color
  */
 int strtocol(char *str){
-	for (int i=0; str[i]; i++)
-    	str[i] = tolower(str[i]);
+	for (int i=0; str[i]; str[i]= tolower(str[i]), i++)
+		;
 	/* Check if str is in color map */
 	for(int i=0;i<NUMCOLORS;i++){
 		if(!strcmp(str,colors[i].name))
 			return colors[i].rgb;
 	}
 	/* Otherwise parse RBG values */
-	unsigned int r, g, b = INT_MIN;
+	unsigned int r, g, b;
+	r = g = b = INT_MIN;
 	sscanf(str,"%d,%d,%d",&r,&g,&b);
 	if (r == INT_MIN || g == INT_MIN || b == INT_MIN ||
 		r > 255 || g > 255 || b > 255)
@@ -192,13 +193,13 @@ void fade_line(char *line, ssize_t len, int startcolor, int endcolor, FILE* stre
 			/* Character is not blacklisted */
 			color_putc(c,r,g,b,stream);
 		else
-			/* Print White */
+			/* Reset terminal color */
 			printf(TERM_RESET"%c",c);
 		r += change_r;
 		g += change_g;
 		b += change_b;
 	}
-	color_putc('\n',255,255,255,stream);
+	puts(TERM_RESET);
 }
 
 /* Option parser */
