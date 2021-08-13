@@ -7,16 +7,32 @@ beautiful looking commandline graphics that can be viewed on any terminal
 supporting ANSI.
 
 
-**Installation**<br>
-git clone https://github.com/armanirodriguez/ansifade<br>
-cd ansifade<br>
-cc ansifade.c -o ansifade<br>
+## Installation<br>
+```
+git clone https://github.com/armanirodriguez/ansifade
+cd ansifade
+make
+```
 
-**Usage**<br>
-Usage: ./ansifade [OPTION...] Color1 Color2<br>
+## Usage<br>
+./ansifade [OPTION...] Color1 Color2<br>
 You may enter color sequences as a string or as a RGB sequence<br>
 
 Example: ./ansifade red blue OR ./ansifade red 0,0,255
 
-Preset colors: red, blue, green, yellow, lime, cyan, pink, purple, white, grey
+**Preset Colors**
+* red
+* blue
+* green
+* yellow
+* lime
+* cyan
+* pink
+* purple
+* white
+* grey
 
+## Options<br>
+  -b, --blacklist=chars : Specify characters to blacklist from coloring. <br>Ex: `./ansifade -b abc red blue #don't color characters a, b or c.`<br><br>
+  -w, --whitelist=chars : Whitelist which characters will be colored. <br>Ex: `./ansifade -w abc red blue #only color characters a, b and c`<br><br>
+  -o, --output=filename : Redirect output to a file instead of stdout.<br>
