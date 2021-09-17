@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
@@ -133,11 +132,9 @@ int main(int argc, char* argv[]){
  * @return integer representation of the color
  */
 int strtocol(char *str){
-	for (int i=0; str[i]; str[i]= tolower(str[i]), i++)
-		;
 	/* Check if str is in color map */
 	for(int i=0;i<NUMCOLORS;i++){
-		if(!strcmp(str,colors[i].name))
+		if(!strcasecmp(str,colors[i].name))
 			return colors[i].rgb;
 	}
 	/* Otherwise parse RBG values */
